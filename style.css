@@ -200,6 +200,7 @@ button { font: inherit; color: inherit; }
 }
 .mk.on .mk-label { opacity: 0.85; }
 .mk.current .mk-label { opacity: 1; color: var(--gold-soft); }
+.mk.lbl-hidden .mk-label { opacity: 0; }
 .leaflet-tooltip.mk-tip {
   background: var(--panel-solid); color: var(--ink); border: 1px solid var(--line); border-radius: 8px;
   font-family: var(--serif); font-size: 13px; padding: 4px 10px; box-shadow: 0 6px 20px rgba(0,0,0,0.4);

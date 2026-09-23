@@ -25,6 +25,7 @@
     attribution: 'Tiles &copy; Esri &mdash; Esri, HERE, Garmin, &copy; OpenStreetMap contributors',
   }).addTo(map);
   const routeLayer = L.layerGroup().addTo(map);
+  map.on('zoomend moveend', () => scheduleDeclutter());
   const markerLayer = L.layerGroup().addTo(map);
 
   const markers = {};
@@ -225,6 +226,30 @@
   };
   let lastChapter = null, lastShown = null;
 
+  // Label collision pass: the current event wins, then newest first; a label that overlaps a kept one is hidden.
+  let declutterQueued = false;
+  function scheduleDeclutter() {
+    if (declutterQueued) return;
+    declutterQueued = true;
+    requestAnimationFrame(() => { declutterQueued = false; declutter(); });
+  }
+  function declutter() {
+    const cur = S.selected ? byId[S.selected] : currentEvent();
+    const shown = events.filter(e => e.t <= S.t)
+      .sort((a, b) => (b === cur) - (a === cur) || b.t - a.t);
+    const kept = [];
+    for (const e of shown) {
+      const elx = markers[e.id].getElement();
+      const lbl = elx && elx.querySelector('.mk-label');
+      if (!lbl) continue;
+      elx.classList.remove('lbl-hidden');
+      const r = lbl.getBoundingClientRect();
+      if (!r.width) continue;
+      const hit = kept.some(k => r.left < k.right + 4 && r.right + 4 > k.left && r.top < k.bottom + 2 && r.bottom + 2 > k.top);
+      if (hit && e !== cur) elx.classList.add('lbl-hidden'); else kept.push(r);
+    }
+  }
+
   function render(opts) {
     opts = opts || {};
     const t = S.t;
@@ -278,6 +303,8 @@
       }
       if (routes[e.id]) routes[e.id].setStyle({ opacity: on ? (cur === e ? 0.95 : 0.55) : 0 });
     }
+
+    scheduleDeclutter();
 
     // timeline
     if (G.x) {

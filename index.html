@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Robert Moses Atlas</title>
+<meta name="description" content="Robert Moses, 1924–1968: every bridge, parkway, park, tower and fight, on a map of New York with a time scrubber. Built from Wikipedia and Robert Caro's The Power Broker.">
+<meta property="og:title" content="Robert Moses Atlas — The Power Broker's New York, 1924–1968">
+<meta property="og:description" content="Scrub forty-four years of appointed power across a map of New York: what he built, what it cost, and how it ended.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" integrity="sha512-h9FcoyWjHcOcmEVkxOfTLnmZFWIH0iZhZT1H2TbOq55xssQGEJHEaIm+PgoUaZbRvQTNTluNOEfb1ZRy6D3BOw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0e17'/%3E%3Cpath d='M4 22 Q16 4 28 22' stroke='%23e2a93d' stroke-width='3' fill='none'/%3E%3Crect x='6' y='22' width='20' height='3' fill='%23e2a93d'/%3E%3C/svg%3E">
+</head>
+<body>
+<div class="app" id="app">
+  <div id="map" aria-label="Map of New York"></div>
+
+  <header class="brand card">
+    <span class="kicker">Robert Moses Atlas</span>
+    <h1>The Power Broker’s New York <small>1924 – 1968</small></h1>
+  </header>
+
+  <nav class="nav card" aria-label="Sections">
+    <button type="button" data-modal="chronicle">Chronicle</button>
+    <button type="button" data-modal="about">About</button>
+    <button type="button" id="key-btn" aria-pressed="false">Key</button>
+  </nav>
+
+  <aside class="clock card" id="clock">
+    <div class="clock-head" id="clock-head">
+      <div class="clock-month" id="clock-month">January</div>
+      <div class="clock-year" id="clock-year">1924</div>
+      <div class="clock-meta">
+        <span id="offices-line">0 offices held</span>
+        <span class="dot">·</span>
+        <span><b class="num" id="works-count">0</b> works on the map</span>
+      </div>
+    </div>
+    <div class="clock-body" id="clock-body">
+      <section class="chapter" id="chapter">
+        <span class="chapter-n" id="chapter-n">Chapter 1 of 6</span>
+        <h3 id="chapter-title"></h3>
+        <p id="chapter-text"></p>
+      </section>
+      <section class="event" id="event" hidden>
+        <span class="event-date" id="event-date"></span>
+        <h4 id="event-title"></h4>
+        <p id="event-body"></p>
+        <p class="event-src" id="event-src"></p>
+        <div class="event-nav">
+          <button type="button" id="prev-btn" title="Previous event (←)">← Prev</button>
+          <button type="button" id="next-btn" title="Next event (→)">Next →</button>
+        </div>
+      </section>
+    </div>
+    <button type="button" class="clock-expand" id="clock-expand" aria-expanded="false">More</button>
+  </aside>
+
+  <div class="legend card" id="legend" hidden>
+    <ul>
+      <li><i class="sw sw-parkway"></i>Parkway</li>
+      <li><i class="sw sw-expressway"></i>Expressway</li>
+      <li><i class="sw sw-bridge"></i>Bridge or tunnel</li>
+      <li><i class="sw sw-park"></i>Park, beach, pool</li>
+      <li><i class="sw sw-housing"></i>Housing and renewal</li>
+      <li><i class="sw sw-culture"></i>Fairs, halls, stadiums</li>
+      <li><i class="sw sw-power"></i>Power project</li>
+      <li><i class="sw sw-office"></i>An office gained or lost</li>
+      <li><i class="sw sw-cost"></i>A cost, a fight, a defeat</li>
+      <li><i class="sw sw-unbuilt"></i>Unbuilt</li>
+    </ul>
+    <p class="legend-note">Drag the playhead, press play, or use ← → and space. Click any mark for its card and source.</p>
+  </div>
+
+  <footer class="timeline card" id="timeline">
+    <div class="transport">
+      <button type="button" class="play" id="play-btn" aria-label="Play"><svg viewBox="0 0 24 24" width="22" height="22"><path id="play-icon" d="M7 4l14 8-14 8z" fill="currentColor"/></svg></button>
+      <button type="button" class="speed" id="speed-btn" title="Playback speed">1×</button>
+    </div>
+    <div class="track" id="track">
+      <svg id="tl-svg" preserveAspectRatio="none" role="img" aria-label="Timeline 1924 to 1968"></svg>
+    </div>
+  </footer>
+
+  <div class="modal" id="chronicle" hidden>
+    <div class="modal-card">
+      <header><h2>Chronicle</h2><button type="button" class="close" data-close aria-label="Close">×</button></header>
+      <div class="modal-body" id="chronicle-body"></div>
+    </div>
+  </div>
+
+  <div class="modal" id="about" hidden>
+    <div class="modal-card">
+      <header><h2>About this atlas</h2><button type="button" class="close" data-close aria-label="Close">×</button></header>
+      <div class="modal-body prose">
+        <p>Robert Moses (1888–1981) never won an election. Between 1924 and 1968 he held as many as a dozen appointed state and city posts at once, and through them he built most of the roads, bridges, parks, beaches, pools and public places that shape New York today, and cleared the homes of roughly a quarter of a million people to do it. This atlas puts the works on a map and the years on a scrubber, so the pattern shows: parks and parkways on Long Island in the 1920s, the city in the 1930s, the authority years, the postwar expressways and slum clearance, and the fights that ended it.</p>
+        <h3>The Power Broker</h3>
+        <p>The frame is Robert Caro’s <em>The Power Broker: Robert Moses and the Fall of New York</em> (Knopf, 1974; 1,336 pages; Pulitzer Prize for Biography, 1975). Caro’s argument, in our words: Moses found that a public authority, a corporation that borrows against its own tolls, is a fourth branch of government. Its bond contracts bind the state not to interfere for as long as the bonds run, its surplus can be rolled into the next project rather than retired, and its chairman answers to no voter. Having built that machine, Moses used it for forty years to decide what the city would be, and the choices, cars over transit and demolition over repair, are the fall of the subtitle. Moses called the book full of mistakes; historians led by Kenneth T. Jackson and Hilary Ballon answered in 2007 with <em>Robert Moses and the Modern City</em>, which credits the sheer volume of what got built and how little has been built since.</p>
+        <h3>What is contested</h3>
+        <p>Two of Caro’s best-known claims are marked on the map as disputed. The parkway overpass story (that bridges were built low to keep buses, and the poor, away from Jones Beach) rests on one aide’s testimony; Bernward Joerges and Kenneth Jackson treat it as legend, Thomas Campanella’s 2017 measurements found the bridges are in fact unusually low. The East Tremont account (that a route one block south would have spared the neighborhood) is Caro’s reading of the 1953 record; the displacement figures here are Wikipedia’s. Where a date was only a range, the card says so. Nothing here is quoted from the book beyond a phrase.</p>
+        <h3>Sources and method</h3>
+        <p>Every card links to its source, almost always the English Wikipedia article on the project, which in turn cites the primary reporting; the bridge-height card links the <a href="https://www.historynewsnetwork.org/article/fact-check-history-of-robert-mosess-parkways-shows" target="_blank" rel="noopener">History News Network fact check</a>. Point locations are the coordinates Wikipedia gives for each place. Road lines, where drawn, are from OpenStreetMap. Map tiles: Esri World Dark Gray Canvas (Esri, HERE, Garmin, © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors). Type: Fraunces and Inter.</p>
+        <p>The layout, a map with a clock and a scrubber, is a homage to the <a href="https://www.qingsworkshop.com/war-atlas-a" target="_blank" rel="noopener">Atlas of Wars</a> at Qing’s Workshop; the code, text and data here are original. Built by Larry, an AI, for Igor Dvorkin, September 2026. Source on <a href="https://github.com/idvorkin-ai-tools/robert-moses-atlas" target="_blank" rel="noopener">GitHub</a>; more explainers at <a href="https://idvorkin-ai-tools.github.io/" target="_blank" rel="noopener">idvorkin-ai-tools</a>.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" integrity="sha512-puJW3E/qXDqYp9IfhAI54BJEaWIfloJ7JWs7OeD5i6ruC9JZL1gERT1wjtwXFlh7CjE7ZJ+/vcRZRkIYIb6p4g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

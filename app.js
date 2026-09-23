@@ -480,7 +480,7 @@
     const sh = shapes[e.id];
     if (sh && S.selected === e.id && !S.playing) {
       const pad = panelPadding();
-      map.flyToBounds(sh.getBounds(), { paddingTopLeft: pad.tl, paddingBottomRight: pad.br, maxZoom: e.type === 'bridge' || e.type === 'park' || e.type === 'culture' || e.type === 'housing' ? 14 : Math.max(e.zoom || 12, 11), duration: 1.2, easeLinearity: 0.3 });
+      map.flyToBounds(sh.getBounds(), { paddingTopLeft: pad.tl, paddingBottomRight: pad.br, maxZoom: e.type === 'bridge' ? 14 : ['park', 'culture', 'housing'].includes(e.type) ? 13 : Math.max(e.zoom || 12, 11), duration: 1.2, easeLinearity: 0.3 });
       return;
     }
     flyToPoint(e, e.zoom);

@@ -70,7 +70,7 @@
       const color = TYPE_COLOR[e.type];
       const weight = e.type === 'bridge' ? 6 : 3.5;
       if (g.kind === 'poly') {
-        L.polygon(g.coords, { color, weight: 1.5, opacity: 0.9, fillColor: color, fillOpacity: 0.22, className: 'shape' }).addTo(group);
+        L.polygon(g.coords.map(r => [r]), { color, weight: 1.5, opacity: 0.9, fillColor: color, fillOpacity: 0.22, className: 'shape' }).addTo(group);
       } else {
         const dashed = e.type === 'unbuilt';
         L.polyline(g.coords, { color, weight, opacity: 0.9, dashArray: dashed ? '6 6' : null, className: 'shape', lineCap: 'round' }).addTo(group);
@@ -395,7 +395,7 @@
     const ph = PHOTOS[o.id];
     if (ph) {
       ui.evPhoto.hidden = false; ui.evImg.src = ph.thumb; ui.evImg.alt = o.title;
-      ui.evCredit.innerHTML = '<a href="' + ph.descUrl + '" target="_blank" rel="noopener">' + escapeHtml(ph.artist || 'Wikimedia Commons') + '</a> · ' +
+      ui.evCredit.innerHTML = '<a href="' + ph.descUrl + '" target="_blank" rel="noopener">' + escapeHtml((ph.artist || 'Wikimedia Commons').replace(/^The original uploader was (.*?) at .*$/, '$1').slice(0, 48)) + '</a> · ' +
         (ph.licenseUrl ? '<a href="' + ph.licenseUrl + '" target="_blank" rel="noopener">' + escapeHtml(ph.license) + '</a>' : escapeHtml(ph.license));
     } else { ui.evPhoto.hidden = true; ui.evImg.removeAttribute('src'); }
     const body = $('clock-body'); if (body) body.scrollTop = 0;

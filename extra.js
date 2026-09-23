@@ -45,7 +45,7 @@ window.ATLAS_EXTRA = {
     'cross-bronx-1963': { geo: ['Alexander Hamilton Bridge', 'Cross Bronx Expressway'], facts: [['Years of work', '15'], ['Bridge over', 'Harlem River']] },
     'worlds-fair-1964': { geo: ['Flushing Meadows Corona Park'], facts: [['Visitors', '51.6 million'], ['Projected', '70 million'], ['Fairground', '646 acres'], ['Nations', '80']], wow: 'Its symbol, the Unisphere, is a stainless-steel Earth, and it still stands in the park.' },
     'fire-island-1964': { geo: ['Robert Moses State Park'], facts: [['Seashore protected', '26 miles'], ['Island width', '0.5 miles'], ['State park', '875 acres, est. 1908']], wow: 'The park at the island’s tip, the oldest state park on Long Island, was renamed for the man whose road the seashore stopped.' },
-    'verrazzano-1964': { geo: ['Verrazzano-Narrows Bridge'], facts: [['Lanes', '13 on two decks'], ['Opened', '21 November 1964'], ['Lower deck', '1969'], ['Homes taken in Bay Ridge', '~7,000 people']] },
+    'verrazzano-1964': { geo: ['Verrazzano-Narrows Bridge'], facts: [['Lanes', '13 on two decks'], ['Opened', '21 November 1964'], ['Lower deck', '1969'], ['Displaced for the Bay Ridge approach', '~7,500 people']] },
     'northern-state-1965': { geo: ['Northern State Parkway'], facts: [['Length', '28.9 miles'], ['Years to finish', '32']] },
     'mta-1968': { geo: ['Robert F. Kennedy Bridge'], facts: [['Moses’s age', '79'], ['Sent to transit since', '$10 billion+'], ['Tolls in 2023', '$2.4 billion']] },
   },

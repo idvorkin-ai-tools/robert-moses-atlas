@@ -295,7 +295,7 @@
     renderMission();
   }
   function renderMission() {
-    const m = S.mission; if (!m) { missionBar.hidden = true; return; }
+    const m = S.mission; $('app').classList.toggle('mission-on', !!m); if (!m) { missionBar.hidden = true; return; }
     mTitle.textContent = m.title;
     mStep.textContent = 'Step ' + (S.step + 1) + ' of ' + m.steps.length + ' · ' + byId[m.steps[S.step]].title;
     mNext.textContent = S.step === m.steps.length - 1 ? 'Finish' : 'Next →';
@@ -480,7 +480,7 @@
     const sh = shapes[e.id];
     if (sh && S.selected === e.id && !S.playing) {
       const pad = panelPadding();
-      map.flyToBounds(sh.getBounds(), { paddingTopLeft: pad.tl, paddingBottomRight: pad.br, maxZoom: Math.max(e.zoom || 12, 11), duration: 1.2, easeLinearity: 0.3 });
+      map.flyToBounds(sh.getBounds(), { paddingTopLeft: pad.tl, paddingBottomRight: pad.br, maxZoom: e.type === 'bridge' || e.type === 'park' || e.type === 'culture' || e.type === 'housing' ? 14 : Math.max(e.zoom || 12, 11), duration: 1.2, easeLinearity: 0.3 });
       return;
     }
     flyToPoint(e, e.zoom);

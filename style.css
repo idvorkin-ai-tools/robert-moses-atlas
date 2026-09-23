@@ -354,8 +354,10 @@ button.link { background: none; border: 0; padding: 0; color: var(--gold-soft); 
   .facts { grid-template-columns: 1fr 1fr; gap: 4px; }
   .facts b { font-size: 13px; }
   .toasts { right: 10px; left: 10px; bottom: 150px; align-items: stretch; }
+  .app.mission-on .toasts { bottom: 200px; }
   .toast { max-width: none; }
-  .mission { top: auto; bottom: 150px; left: 10px; right: 10px; width: auto; padding: 8px 12px; }
+  .mission { top: auto; bottom: 108px; left: 10px; right: 10px; width: auto; padding: 8px 12px; }
+  .app.mission-on .nav { display: none; }
   .mission b { font-size: 15px; }
   .mission-btns { margin-top: 6px; }
   .nav { flex-wrap: wrap; justify-content: flex-end; max-width: calc(100vw - 20px); }

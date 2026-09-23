@@ -244,7 +244,7 @@ button { font: inherit; color: inherit; }
   .clock-year { font-size: 40px; margin-bottom: 2px; }
   .clock-meta { font-size: 11px; }
   .clock-body { display: none; }
-  .clock.expanded { width: calc(100vw - 20px); max-height: calc(100vh - 78px - 120px); }
+  .clock.expanded { width: calc(100vw - 20px); max-height: min(58vh, calc(100vh - 78px - 120px)); }
   .clock.expanded .clock-body { display: block; }
   .clock-expand { display: block; background: none; border: 0; padding: 4px 0 0; color: var(--gold-soft); font-size: 11.5px; text-align: left; cursor: pointer; }
   .chapter h3 { font-size: 16px; }

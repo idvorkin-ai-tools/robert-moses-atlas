@@ -352,7 +352,7 @@
     ui.offices.textContent = held.length + (held.length === 1 ? ' office' : ' offices');
     ui.offices.title = held.map(o => o.name).join('\n') || 'No office yet';
     ui.power.innerHTML = Array.from({ length: maxOffices }, (_, i) => '<i class="' + (i < held.length ? 'on' : '') + '"></i>').join('');
-    if (held.length === maxOffices && !P.peak) { P.peak = true; save(); }
+    if (held.length === maxOffices && !P.peak) { P.peak = true; save(); setTimeout(checkAchievements, 0); }
     ui.foundN.textContent = P.found.length + ' / ' + events.length;
     ui.foundBar.style.width = (100 * P.found.length / events.length) + '%';
     ui.secretN.textContent = P.secrets.length + ' / ' + finds.length;

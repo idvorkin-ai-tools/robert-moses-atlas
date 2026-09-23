@@ -430,7 +430,7 @@ window.ATLAS = {
       id: 'verrazzano-1964', t: 1964.89, date: '21 November 1964', type: 'bridge',
       title: 'Verrazzano-Narrows Bridge',
       lat: 40.6064, lon: -74.0456, zoom: 12,
-      body: 'Ammann’s last great span and the longest suspension bridge in the world when it opened, joining Staten Island to the city at last. The Bay Ridge approaches took about 7,000 people’s homes. The lower deck opened in 1969.',
+      body: 'Ammann’s last great span and the longest suspension bridge in the world when it opened, joining Staten Island to the city at last. The Bay Ridge approach, approved in December 1958, displaced about 7,500 people. The lower deck opened in 1969.',
       src: 'https://en.wikipedia.org/wiki/Verrazzano-Narrows_Bridge', srcName: 'Wikipedia: Verrazzano-Narrows Bridge',
     },
     {

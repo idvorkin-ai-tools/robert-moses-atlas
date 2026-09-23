@@ -24,20 +24,23 @@
   </header>
 
   <nav class="nav card" aria-label="Sections">
+    <button type="button" data-modal="missions">Missions</button>
     <button type="button" data-modal="chronicle">Chronicle</button>
     <button type="button" data-modal="about">About</button>
     <button type="button" id="key-btn" aria-pressed="false">Key</button>
+    <button type="button" id="sound-btn" aria-pressed="false" title="Sound off">♪ Off</button>
   </nav>
 
   <aside class="clock card" id="clock">
     <div class="clock-head" id="clock-head">
       <div class="clock-month" id="clock-month">January</div>
       <div class="clock-year" id="clock-year">1924</div>
-      <div class="clock-meta">
-        <span id="offices-line">0 offices held</span>
-        <span class="dot">·</span>
-        <span><b class="num" id="works-count">0</b> works on the map</span>
+      <div class="hud">
+        <div class="hud-row" title="Offices held at once"><span class="hud-k">Power</span><div class="meter" id="power-meter"></div><span class="hud-v" id="offices-line">0 offices</span></div>
+        <div class="hud-row"><span class="hud-k">Found</span><div class="bar"><i id="found-bar"></i></div><span class="hud-v" id="found-count">0 / 0</span></div>
+        <div class="hud-row"><span class="hud-k">Secrets</span><div class="bar bar-secret"><i id="secret-bar"></i></div><span class="hud-v" id="secret-count">0 / 0</span></div>
       </div>
+      <div class="clock-meta"><b class="num" id="works-count">0</b> works on the map</div>
     </div>
     <div class="clock-body" id="clock-body">
       <section class="chapter" id="chapter">
@@ -46,9 +49,12 @@
         <p id="chapter-text"></p>
       </section>
       <section class="event" id="event" hidden>
+        <figure class="event-photo" id="event-photo" hidden><img id="event-img" alt="" loading="lazy" referrerpolicy="no-referrer"><figcaption id="event-credit"></figcaption></figure>
         <span class="event-date" id="event-date"></span>
         <h4 id="event-title"></h4>
+        <ul class="facts" id="event-facts" hidden></ul>
         <p id="event-body"></p>
+        <p class="event-wow" id="event-wow" hidden></p>
         <p class="event-src" id="event-src"></p>
         <div class="event-nav">
           <button type="button" id="prev-btn" title="Previous event (←)">← Prev</button>
@@ -58,6 +64,15 @@
     </div>
     <button type="button" class="clock-expand" id="clock-expand" aria-expanded="false">More</button>
   </aside>
+
+  <div class="mission card" id="mission" hidden>
+    <span class="kicker">Mission</span>
+    <b id="mission-title"></b>
+    <span id="mission-step"></span>
+    <div class="mission-btns"><button type="button" id="mission-next">Next →</button><button type="button" id="mission-quit" class="quiet">Quit</button></div>
+  </div>
+
+  <div class="toasts" id="toasts" aria-live="polite"></div>
 
   <div class="legend card" id="legend" hidden>
     <ul>
@@ -71,8 +86,9 @@
       <li><i class="sw sw-office"></i>An office gained or lost</li>
       <li><i class="sw sw-cost"></i>A cost, a fight, a defeat</li>
       <li><i class="sw sw-unbuilt"></i>Unbuilt</li>
+      <li><i class="sw sw-find"></i>A secret to find</li>
     </ul>
-    <p class="legend-note">Drag the playhead, press play, or use ← → and space. Click any mark for its card and source.</p>
+    <p class="legend-note">Drag the playhead, press play, or use ← → and space. Click any mark, road, bridge or park for its card. M opens missions.</p>
   </div>
 
   <footer class="timeline card" id="timeline">
@@ -92,6 +108,19 @@
     </div>
   </div>
 
+  <div class="modal" id="missions" hidden>
+    <div class="modal-card">
+      <header><h2>Missions</h2><button type="button" class="close" data-close aria-label="Close">×</button></header>
+      <div class="modal-body">
+        <p class="modal-lead">A mission walks you through one story, stop by stop. Press Next (or Enter) to move on; click anything else to wander off and come back.</p>
+        <div id="mission-list"></div>
+        <h3 class="sub">Achievements</h3>
+        <ul class="ach" id="ach-list"></ul>
+        <p class="modal-foot">Progress is saved in this browser only. <button type="button" id="reset-btn" class="link">Reset it</button></p>
+      </div>
+    </div>
+  </div>
+
   <div class="modal" id="about" hidden>
     <div class="modal-card">
       <header><h2>About this atlas</h2><button type="button" class="close" data-close aria-label="Close">×</button></header>
@@ -102,7 +131,7 @@
         <h3>What is contested</h3>
         <p>Two of Caro’s best-known claims are marked on the map as disputed. The parkway overpass story (that bridges were built low to keep buses, and the poor, away from Jones Beach) rests on one aide’s testimony; Bernward Joerges and Kenneth Jackson treat it as legend, Thomas Campanella’s 2017 measurements found the bridges are in fact unusually low. The East Tremont account (that a route one block south would have spared the neighborhood) is Caro’s reading of the 1953 record; the displacement figures here are Wikipedia’s. Where a date was only a range, the card says so. Nothing here is quoted from the book beyond a phrase.</p>
         <h3>Sources and method</h3>
-        <p>Every card links to its source, almost always the English Wikipedia article on the project, which in turn cites the primary reporting; the bridge-height card links the <a href="https://www.historynewsnetwork.org/article/fact-check-history-of-robert-mosess-parkways-shows" target="_blank" rel="noopener">History News Network fact check</a>. Point locations are the coordinates Wikipedia gives for each place. Road lines, where drawn, are from OpenStreetMap. Map tiles: Esri World Dark Gray Canvas (Esri, HERE, Garmin, © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors). Type: Fraunces and Inter.</p>
+        <p>Every card links to its source, almost always the English Wikipedia article on the project, which in turn cites the primary reporting; the scale figures on each card are taken from that article. Photographs are hotlinked from Wikimedia Commons, only where the file carries a free license, and each is credited on the card. The bridge-height card links the <a href="https://www.historynewsnetwork.org/article/fact-check-history-of-robert-mosess-parkways-shows" target="_blank" rel="noopener">History News Network fact check</a>. Point locations are the coordinates Wikipedia gives for each place. Road lines, where drawn, are from OpenStreetMap. Map tiles: Esri World Dark Gray Canvas (Esri, HERE, Garmin, © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors). Type: Fraunces and Inter.</p>
         <p>The layout, a map with a clock and a scrubber, is a homage to the <a href="https://www.qingsworkshop.com/war-atlas-a" target="_blank" rel="noopener">Atlas of Wars</a> at Qing’s Workshop; the code, text and data here are original. Built by Larry, an AI, for Igor Dvorkin, September 2026. Source on <a href="https://github.com/idvorkin-ai-tools/robert-moses-atlas" target="_blank" rel="noopener">GitHub</a>; more explainers at <a href="https://idvorkin-ai-tools.github.io/" target="_blank" rel="noopener">idvorkin-ai-tools</a>.</p>
       </div>
     </div>
@@ -111,6 +140,9 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" integrity="sha512-puJW3E/qXDqYp9IfhAI54BJEaWIfloJ7JWs7OeD5i6ruC9JZL1gERT1wjtwXFlh7CjE7ZJ+/vcRZRkIYIb6p4g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="data.js"></script>
+<script src="extra.js"></script>
+<script src="geo.js"></script>
+<script src="photos.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
